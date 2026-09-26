@@ -1,129 +1,90 @@
-document
-    .getElementById('btn-calcular')
-    .addEventListener('click', procesarSimulacion);
-
-function procesarSimulacion() {
-
-    const montoInput = parseFloat(
-        document.getElementById('monto').value
-    );
-
-    const tasaAnualInput = parseFloat(
-        document.getElementById('tasa').value
-    ) / 100;
-
-    const plazoMeses = parseInt(
-        document.getElementById('plazo').value
-    );
-
-    const IVA_VALOR = 0.16;
-
-    if (
-        isNaN(montoInput) ||
-        isNaN(tasaAnualInput) ||
-        montoInput <= 0
-    ) {
-
-        alert(
-            "Ingrese parámetros numéricos válidos e intente nuevamente."
-        );
-
-        return;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    color: lab(0.27% 0 0);
+    padding: 30px;
+}
+.container {
+    max-width: 1100px;
+    background: #ffffff;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+h1 {
+    color: #12dc4b;
+    text-align: center;
+    margin-bottom: 25px;
+}
+h2 {
+    color: #b90ab6;
+    margin-top: 30px;
+}
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+label {
+    font-weight: 600;
+    align-self: center;
+    color: #ddc10a;
+}
+input,
+select {
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+button {
+    grid-column: 1 / -1;
+    padding: 12px;
+    background-color: #16ebb5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #7a67b0;
+}
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f4f8;
+    border-radius: 5px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: hsl(179, 97%, 47%);
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #1a857c;
+}
+@media (max-width: 700px) {
+    form {
+        grid-template-columns: 1fr;
     }
-
-    const amortizacionCapital =
-        montoInput / plazoMeses;
-
-    const tasaMensualEquivalente =
-        tasaAnualInput / 12;
-
-    let saldoInsoluto = montoInput;
-
-    const tablaBody =
-        document.querySelector(
-            '#tabla-amortizacion tbody'
-        );
-
-    tablaBody.innerHTML = '';
-
-    let acumuladoPagos = 0;
-
-    for (
-        let periodo = 1;
-        periodo <= plazoMeses;
-        periodo++
-    ) {
-
-        const saldoInicial = saldoInsoluto;
-
-        const interesDelPeriodo =
-            saldoInsoluto *
-            tasaMensualEquivalente;
-
-        const ivaSobreInteres =
-            interesDelPeriodo *
-            IVA_VALOR;
-
-        const pagoMensualTotal =
-            amortizacionCapital +
-            interesDelPeriodo +
-            ivaSobreInteres;
-
-        saldoInsoluto =
-            saldoInsoluto -
-            amortizacionCapital;
-
-        if (saldoInsoluto < 0) {
-            saldoInsoluto = 0;
-        }
-
-        acumuladoPagos += pagoMensualTotal;
-
-        const fila =
-            document.createElement('tr');
-
-        fila.innerHTML = `
-            <td>${periodo}</td>
-            <td>$${saldoInicial.toFixed(2)}</td>
-            <td>$${amortizacionCapital.toFixed(2)}</td>
-            <td>$${interesDelPeriodo.toFixed(2)}</td>
-            <td>$${ivaSobreInteres.toFixed(2)}</td>
-            <td>$${pagoMensualTotal.toFixed(2)}</td>
-            <td>$${saldoInsoluto.toFixed(2)}</td>
-        `;
-
-        tablaBody.appendChild(fila);
+    table {
+        font-size: 11px;
     }
-
-    const resultado =
-        document.getElementById('resultado');
-
-    resultado.innerHTML = `
-        <h3>Resumen del Crédito</h3>
-
-        <p>
-            <strong>Monto solicitado:</strong>
-            $${montoInput.toFixed(2)}
-        </p>
-
-        <p>
-            <strong>Tasa anual:</strong>
-            ${(tasaAnualInput * 100).toFixed(2)}%
-        </p>
-
-        <p>
-            <strong>Plazo:</strong>
-            ${plazoMeses} meses
-        </p>
-
-        <p>
-            <strong>Capital mensual:</strong>
-            $${amortizacionCapital.toFixed(2)}
-        </p>
-
-        <p>
-            <strong>Total a pagar:</strong>
-            $${acumuladoPagos.toFixed(2)}
-        </p>
-    `;
+    .container {
+        padding: 15px;
+    }
 }
